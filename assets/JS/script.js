@@ -1,6 +1,7 @@
 
 //variaveis let
-let listaDinamica =[];
+let tentativas = 6;
+let listaDinamica = [];
 let palavraSecretaCategoria;
 let palavraSecretaSorteada;
 
@@ -258,13 +259,13 @@ function criarPalavraSecreta() {
 
     palavraSecretaSorteada = palavras[indexPalavra].nome;
     palavraSecretaCategoria = palavras[indexPalavra].categoria;
-   // alert(palavraSecretaSorteada);
+    // alert(palavraSecretaSorteada);
     //alert(palavraSecretaCategoria);
 }
 
 //Função p/ mostrar a palvra na tela
 //chamar a função montarPalvraNaTela
-montarPalavraNaTela(); 
+montarPalavraNaTela();
 function montarPalavraNaTela() {
     const categoria = document.getElementById("categoria");
     categoria.innerHTML = palavraSecretaCategoria;
@@ -272,18 +273,94 @@ function montarPalavraNaTela() {
     const palavraTela = document.getElementById("palavra-secreta");
     palavraTela.innerHTML = "";
 
-    for(i = 0; i < palavraSecretaSorteada.length; i++){
+    for (i = 0; i < palavraSecretaSorteada.length; i++) {
         if (listaDinamica[i] == undefined) {
             listaDinamica[i] = "&nbsp;"
-            palavraTela.innerHTML = palavraTela.innerHTML + "<div class='letras>" + listaDinamica[i]  + "</div>"
+            palavraTela.innerHTML = palavraTela.innerHTML + "<div class='letras'>" + listaDinamica[i] + "</div>"
         }
         else {
-            palavraTela.innerHTML = palavraTela.innerHTML + "<div class='letras>" + listaDinamica[i]  + "</div>"
+            palavraTela.innerHTML = palavraTela.innerHTML + "<div class='letras'>" + listaDinamica[i] + "</div>"
         }
     }
 
 }
 
+//FUNÇOES PARA VERIFICAR A LETRA ESCOLIDA
+//FUNÇÃO MUDAR COR DE LETRA
+//E UMA VARIAVEL DE TENTATIVASS
+function vereficaLetraEscolhida(letra) {
+    document.getElementById("tecla-" + letra).disabled = true;
+    if (tentativas > 0) {
+        mudarStlyeLetra("tecla-" + letra);
+        
+        comparalistas(letra);
 
+        montarPalavraNaTela(); 
+    }
+
+}
+// FUNÇÃO COMPARA LISTA PARA VEREFICAR SE A LETRA
+//SELEÇONADA COM DIZ A PALAVRA SECRETA  
+function mudarStlyeLetra(tecla) {
+    document.getElementById(tecla).style.background = "#C71585";
+    document.getElementById(tecla).style.color = "#ffffff ";
+
+}
+
+function comparalistas(letra) {
+    const pos = palavraSecretaSorteada.indexOf(letra)
+    if (pos < 0) {
+        tentativas--
+        carregaImagemForca()
+        //vereficar se tem tentativas
+        //mensagem
+    }
+    else {
+        for (i = 0; i < palavraSecretaSorteada.length; i++) {
+            if (palavraSecretaSorteada[i] == letra) {
+                listaDinamica[i] = letra;
+            }
+        }
+    }
+
+    //CRIADO VARIAVEL PARA VITORIA E COMPARAÇÃO ENTRE A PALAVRA SECRETA E A LISTA
+    let vitoria = true;
+    for (i = 0; i < palavraSecretaSorteada.length; i++) {
+        if (palavraSecretaSorteada[i] != listaDinamica[i]) {
+            vitoria = false;
+        }
+    }
+
+    if (vitoria == true) {
+        //mensagem na tela
+        tentativas = 0;
+    }
+}
+//FUNÇÃO DE CARREGAR IMAGEM NA TELA 
+    function carregaImagemForca() {
+        switch(tentativas) {
+            case 5:
+                document.getElementById("imagem").style.background = "url('../img/forca01.png')";
+                break;
+            case 4:
+                document.getElementById("imagem").style.background = "url('../img/forca02.png')";
+                break;
+            case 3: 
+                document.getElementById("imagem").style.background = "url('../img/forca03.png')";
+                break;
+            case 2: 
+                document.getElementById("imagem").style.background = "url('../img/forca04.png')";
+                break;
+            case 1:
+                document.getElementById("imagem").style.background = "url('../img/forca05.png)";
+                break;
+            case 0:
+                document.getElementById("imagem").style.background = "url('../img/forca06.png')";
+                break;
+            default:
+                document.getElementById("imagem").style.background = "url('../img/forca.png')";
+                break;
+        }
+    }
 
 
