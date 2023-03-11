@@ -311,9 +311,13 @@ function comparalistas(letra) {
     const pos = palavraSecretaSorteada.indexOf(letra)
     if (pos < 0) {
         tentativas--
-        carregaImagemForca()
-        //vereficar se tem tentativas
-        //mensagem
+        carregaImagemForca();
+        if(tentativas ==0)
+        {
+            abreModal("OPS","Não foi dessa vez ... 🥹🥹🥹 A palavra secreta era <br>" + palavraSecretaSorteada);
+        }
+        
+        
     }
     else {
         for (i = 0; i < palavraSecretaSorteada.length; i++) {
@@ -332,7 +336,8 @@ function comparalistas(letra) {
     }
 
     if (vitoria == true) {
-        //mensagem na tela
+        abreModal("PARABÉNS","Voçê venceu....😤😤😤😤");
+
         tentativas = 0;
     }
 }
@@ -363,4 +368,24 @@ function comparalistas(letra) {
         }
     }
 
+ //abreModal 
 
+    function abreModal( titulo, mensagem ) {
+        let modalTitulo = document.getElementById ("exampleModalLabel");
+            modalTitulo.innerText = titulo;
+        
+        let modalBody = document.getElementById ("modalBody");
+            modalBody.innerHTML = mensagem;    
+
+        $("#myModal").modal({
+            show:true
+        });
+
+    }
+
+
+    let btnReniciar = document.querySelector("#btn-Reniciar")
+    btnReniciar.addEventListener("click", function()
+    {
+        location.reload();
+    });
